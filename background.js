@@ -4,7 +4,7 @@ const generators = {
     return names[Math.floor(Math.random() * names.length)];
   },
   email: () => {
-    const users = ['luiz', 'ricardo', 'barel', 'ana', 'carlos', 'user', 'admin', 'teste', 'yan', 'giovani','roberto'];
+    const users = ['luiz', 'ricardo', 'barel', 'ana', 'carlos', 'user', 'admin', 'teste', 'yan', 'giovani', 'roberto'];
     const domains = ['gmail.com', 'outlook.com', 'yahoo.com', 'empresa.com.br'];
     const selectedUser = users[Math.floor(Math.random() * users.length)];
     const selectedDomain = domains[Math.floor(Math.random() * domains.length)];
@@ -115,22 +115,6 @@ const generators = {
 
     return `${base.join('')}${firstDigit}${secondDigit}`;
   },
-  cep: () => {
-    const num = Math.floor(Math.random() * 90000000) + 10000000;
-    return `${num.toString().slice(0, 5)}-${num.toString().slice(5)}`;
-  },
-  address: () => {
-    const streets = ['Rua das Flores', 'Av. Paulista', 'Rua XV de Novembro', 'Av. Brasil', 'Rua São João'];
-    const selectedStreet = streets[Math.floor(Math.random() * streets.length)];
-    const number = Math.floor(Math.random() * 9999) + 1;
-    return `${selectedStreet}, ${number}`;
-  },
-  date: () => {
-    const dia = Math.floor(Math.random() * 28) + 1;
-    const mes = Math.floor(Math.random() * 12) + 1;
-    const ano = Math.floor(Math.random() * 50) + 1970;
-    return `${dia.toString().padStart(2, '0')}/${mes.toString().padStart(2, '0')}/${ano}`;
-  },
   password: () => {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*';
     let password = '';
@@ -157,9 +141,6 @@ chrome.runtime.onInstalled.addListener(() => {
     { id: 'rg', title: 'RG' },
     { id: 'cnpj', title: 'CNPJ' },
     { id: 'ie', title: 'Inscrição Estadual' },
-    { id: 'cep', title: 'CEP' },
-    { id: 'address', title: 'Endereço' },
-    { id: 'date', title: 'Data' },
     { id: 'password', title: 'Senha' }
   ];
 
