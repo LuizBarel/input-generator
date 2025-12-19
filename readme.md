@@ -20,20 +20,15 @@ Extensão que permite gerar dados automaticamente em campos de formulário atrav
 ### Chrome / Edge / Brave / Opera
 
 1. **Prepare os arquivos:**
-
-   - Crie uma pasta (ex:`gerador-inputs`)
-   - Salve os arquivos `manifest.json`, `background.js` e `content.js` nesta pasta
-   - [Opcional] Crie ícones (ou use ícones temporários):
-     - `icon16.png` (16x16 pixels)
-     - `icon48.png` (48x48 pixels)
-     - `icon128.png` (128x128 pixels)
-
+   
+   - Clone este repositório
+     
 2. **Instale a extensão:**
 
    - Abra o navegador e digite `chrome://extensions/` na barra de endereços
    - Ative o "Modo do desenvolvedor" (canto superior direito)
    - Clique em "Carregar sem compactação"
-   - Selecione a pasta `gerador-inputs`
+   - Selecione a pasta do repositório
    - A extensão será instalada!
 
 3. **Novas alterações:**
