@@ -67,7 +67,7 @@ const generators = {
   },
   rg: () => {
     const n = () => Math.floor(Math.random() * 10);
-    return `${n()}${n()}.${n()}${n()}${n()}.${n()}${n()}${n()}-${n()}`;
+    return `${n()}${n()}${n()}${n()}${n()}${n()}${n()}${n()}${n()}`;
   },
   cnpj: () => {
     const cnpj = [];
