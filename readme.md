@@ -1,0 +1,90 @@
+# Gerador de Inputs - Extensão de Navegador
+
+## 📋 Descrição
+
+Extensão que permite gerar dados automaticamente em campos de formulário através do menu de contexto (botão direito).
+
+## 🚀 Tipos de Dados Suportados
+
+- Nome Completo
+- E-mail
+- Telefone
+- CPF
+- RG
+- CNPJ
+- I.E
+- CEP
+- Endereço
+- Data
+- Senha
+
+## 📦 Instalação Local (Modo Desenvolvedor)
+
+### Chrome / Edge / Brave / Opera
+
+1. **Prepare os arquivos:**
+
+   - Crie uma pasta (ex:`gerador-inputs`)
+   - Salve os arquivos `manifest.json`, `background.js` e `content.js` nesta pasta
+   - [Opcional] Crie ícones (ou use ícones temporários):
+     - `icon16.png` (16x16 pixels)
+     - `icon48.png` (48x48 pixels)
+     - `icon128.png` (128x128 pixels)
+
+2. **Instale a extensão:**
+   - Abra o navegador e digite `chrome://extensions/` na barra de endereços
+   - Ative o "Modo do desenvolvedor" (canto superior direito)
+   - Clique em "Carregar sem compactação"
+   - Selecione a pasta `gerador-inputs`
+   - A extensão será instalada!
+
+### Firefox
+
+1. **Prepare os arquivos** (mesmos do Chrome)
+
+2. **Instale temporariamente:**
+   - Digite `about:debugging` na barra de endereços
+   - Clique em "Este Firefox"
+   - Clique em "Carregar extensão temporária"
+   - Selecione o arquivo `manifest.json`
+
+**Nota:** Para Firefox, a extensão precisa de ajustes no manifest (usar `manifest_version: 2`).
+
+## 🎯 Como Usar
+
+1. Acesse qualquer página com formulários
+2. Clique com o **botão direito** em um campo de input
+3. Selecione **"Gerar Input"**
+4. Escolha o tipo de dado que deseja gerar
+5. O campo será preenchido automaticamente!
+
+## 🔧 Personalização
+
+Você pode adicionar novos tipos de dados editando o objeto `generators` no arquivo `background.js`:
+
+```javascript
+novoTipo: () => {
+  // Sua lógica aqui
+  return "valor gerado";
+};
+```
+
+E adicionar o item no menu:
+
+```javascript
+{ id: 'novoTipo', title: 'Novo Tipo' }
+```
+
+## ⚠️ Observações
+
+- Os dados gerados são fictícios e aleatórios
+- Use apenas para testes e desenvolvimento
+- Compatível com Chrome, Edge, Brave, Opera e navegadores Chromium
+
+## 📝 Licença
+
+Livre para uso pessoal e comercial.
+
+## 👤 Autor
+
+Luiz Barel
