@@ -4,7 +4,7 @@ const generators = {
     return names[Math.floor(Math.random() * names.length)];
   },
   email: () => {
-    const users = ['luiz', 'ricardo', 'barel', 'ana', 'carlos', 'user', 'admin', 'teste'];
+    const users = ['luiz', 'ricardo', 'barel', 'ana', 'carlos', 'user', 'admin', 'teste', 'yan', 'giovani','roberto'];
     const domains = ['gmail.com', 'outlook.com', 'yahoo.com', 'empresa.com.br'];
     const selectedUser = users[Math.floor(Math.random() * users.length)];
     const selectedDomain = domains[Math.floor(Math.random() * domains.length)];
