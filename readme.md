@@ -32,11 +32,18 @@ Extensão que permite gerar dados automaticamente em campos de formulário atrav
      - `icon128.png` (128x128 pixels)
 
 2. **Instale a extensão:**
+
    - Abra o navegador e digite `chrome://extensions/` na barra de endereços
    - Ative o "Modo do desenvolvedor" (canto superior direito)
    - Clique em "Carregar sem compactação"
    - Selecione a pasta `gerador-inputs`
    - A extensão será instalada!
+
+3. **Novas alterações:**
+   Quando fizer alguma alteração no código (seja um git pull ou suas próprias alterações), será necessário atualizar a extensão manualmente.
+   - Abra o navegador e entre na página de extensão `chrome://extensions/`
+   - Encontre a extensão e clique no botão de "Atualizar" (icone de refresh)
+   - Recarregue a página que você queira testar as mudanças e teste!
 
 ### Firefox
 
@@ -78,7 +85,7 @@ E adicionar o item no menu:
 ## ⚠️ Observações
 
 - Os dados gerados são fictícios e aleatórios
-- Use apenas para testes e desenvolvimento
+- Uso focado em testes e desenvolvimento
 - Compatível com Chrome, Edge, Brave, Opera e navegadores Chromium
 
 ## 📝 Licença
