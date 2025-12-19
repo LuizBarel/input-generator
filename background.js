@@ -1,4 +1,3 @@
-// Geradores de dados
 const generators = {
   name: () => {
     const names = ['João Silva', 'Maria Santos', 'Pedro Oliveira', 'Ana Costa', 'Carlos Souza', 'Juliana Lima', 'Fernando Alves', 'Patricia Rocha'];
