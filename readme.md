@@ -13,9 +13,6 @@ Extensão que permite gerar dados automaticamente em campos de formulário atrav
 - RG
 - CNPJ
 - I.E
-- CEP
-- Endereço
-- Data
 - Senha
 
 ## 📦 Instalação Local (Modo Desenvolvedor)
