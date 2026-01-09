@@ -122,6 +122,9 @@ const generators = {
       password += chars[Math.floor(Math.random() * chars.length)];
     }
     return password;
+  },
+  uuid: () => {
+    return crypto.randomUUID()
   }
 };
 
@@ -141,7 +144,8 @@ chrome.runtime.onInstalled.addListener(() => {
     { id: 'rg', title: 'RG' },
     { id: 'cnpj', title: 'CNPJ' },
     { id: 'ie', title: 'Inscrição Estadual' },
-    { id: 'password', title: 'Senha' }
+    { id: 'password', title: 'Senha' },
+    { id: 'uuid', title: 'UUID v4' }
   ];
 
   types.forEach(tipo => {
