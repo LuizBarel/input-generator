@@ -1,23 +1,31 @@
 {
   "manifest_version": 3,
   "name": "Gerador de Inputs",
+  "short_name": "Gerador de Inputs",
   "version": "1.0.0",
-  "description": "Gere dados automaticamente em campos de formulário com um clique",
+  "description": "Gere dados fictícios (CPF, CNPJ, nome, e-mail e mais) em campos de formulário pelo botão direito.",
+  "author": "Luiz Barel",
+  "homepage_url": "https://github.com/LuizBarel/input-generator",
   "permissions": [
     "contextMenus",
-    "activeTab"
+    "activeTab",
+    "scripting"
   ],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "background.js",
+    "type": "module"
   },
-  "content_scripts": [
-    {
-      "matches": [
-        "<all_urls>"
-      ],
-      "js": [
-        "content.js"
-      ]
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_title": "Gerador de Inputs",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
     }
-  ]
+  }
 }

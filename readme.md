@@ -6,14 +6,25 @@ Extensão que permite gerar dados automaticamente em campos de formulário atrav
 
 ## 🚀 Tipos de Dados Suportados
 
+Organizados em submenus no botão direito:
+
+**Pessoais**
 - Nome Completo
 - E-mail
 - Telefone
+- Data de Nascimento
+- CEP
+
+**Documentos**
 - CPF
 - RG
-- CNPJ
+- CNPJ (legado, numérico)
+- CNPJ alfanumérico
 - I.E
+
+**Outros**
 - Senha
+- UUID v4
 
 ## 📦 Instalação Local (Modo Desenvolvedor)
 
@@ -57,21 +68,31 @@ Extensão que permite gerar dados automaticamente em campos de formulário atrav
 4. Escolha o tipo de dado que deseja gerar
 5. O campo será preenchido automaticamente!
 
+## 📤 Publicação na Chrome Web Store
+
+1. Rode `./package.sh` para gerar `gerador-de-inputs.zip` (manifest, scripts da extensão e ícones).
+2. Envie o ZIP no [painel de desenvolvedor](https://chrome.google.com/webstore/devconsole).
+3. Textos, justificativas de permissão e política de privacidade estão em `docs/store-listing.md`.
+
+O preenchimento usa `activeTab` + `scripting`: o código só é injetado na aba após o clique no menu, sem permissão de host.
+
 ## 🔧 Personalização
 
-Você pode adicionar novos tipos de dados editando o objeto `generators` no arquivo `background.js`:
+Para adicionar um novo tipo, edite `generators.js`:
+
+1. Escreva o gerador no objeto `implementations`:
 
 ```javascript
 novoTipo: () => {
   // Sua lógica aqui
   return "valor gerado";
-};
+},
 ```
 
-E adicionar o item no menu:
+2. Registre-o na lista `GENERATORS` (o menu é montado a partir dela):
 
 ```javascript
-{ id: 'novoTipo', title: 'Novo Tipo' }
+{ id: 'novoTipo', title: 'Novo Tipo', group: 'group_others', generate: implementations.novoTipo }
 ```
 
 ## ⚠️ Observações
