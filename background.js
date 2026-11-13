@@ -1,14 +1,36 @@
 const generators = {
   name: () => {
-    const names = ['João Silva', 'Maria Santos', 'Pedro Oliveira', 'Ana Costa', 'Carlos Souza', 'Juliana Lima', 'Fernando Alves', 'Patricia Rocha'];
-    return names[Math.floor(Math.random() * names.length)];
+    const { first, lasts, particle } = randomPerson();
+    const parts = [first, ...lasts.slice(0, -1)];
+    if (particle) parts.push(particle);
+    parts.push(lasts[lasts.length - 1]);
+    return parts.join(' ');
   },
   email: () => {
-    const users = ['luiz', 'ricardo', 'barel', 'ana', 'carlos', 'user', 'admin', 'teste', 'yan', 'giovani', 'roberto'];
-    const domains = ['gmail.com', 'outlook.com', 'yahoo.com', 'empresa.com.br'];
-    const selectedUser = users[Math.floor(Math.random() * users.length)];
-    const selectedDomain = domains[Math.floor(Math.random() * domains.length)];
-    return `${selectedUser}${Math.floor(Math.random() * 999)}@${selectedDomain}`;
+    const person = randomPerson();
+    const first = removeAccents(person.first).toLowerCase();
+    const last = removeAccents(person.lasts[person.lasts.length - 1]).toLowerCase();
+    const digits = () => String(randInt(0, 9999)).padStart(randInt(2, 4), '0');
+
+    const localParts = [
+      `${first}.${last}`,
+      `${first}.${last}`,
+      `${first}${last}`,
+      `${first}_${last}`,
+      `${first[0]}${last}`,
+      `${first}.${last}${digits()}`,
+      `${first}${last}${digits()}`,
+      `${first}${digits()}`
+    ];
+
+    // domínios repetidos aumentam o peso no sorteio
+    const domains = [
+      'gmail.com', 'gmail.com', 'gmail.com', 'gmail.com',
+      'outlook.com', 'outlook.com', 'hotmail.com', 'hotmail.com',
+      'yahoo.com.br', 'icloud.com', 'uol.com.br', 'bol.com.br', 'empresa.com.br'
+    ];
+
+    return `${pick(localParts)}@${pick(domains)}`;
   },
   phone: () => {
     const validDdds = [
@@ -104,8 +126,81 @@ const generators = {
   },
   uuid: () => {
     return crypto.randomUUID()
+  },
+  cep: () => {
+    // faixas de prefixo (5 primeiros dígitos) por UF
+    const ranges = [
+      [1000, 19999], [20000, 28999], [29000, 29999], [30000, 39999],
+      [40000, 48999], [49000, 49999], [50000, 56999], [57000, 57999],
+      [58000, 58999], [59000, 59999], [60000, 63999], [64000, 64999],
+      [65000, 65999], [66000, 68899], [69000, 69299], [70000, 72799],
+      [72800, 76799], [77000, 77995], [78000, 78899], [79000, 79999],
+      [80000, 87999], [88000, 89999], [90000, 99999]
+    ];
+    const [min, max] = pick(ranges);
+    const prefix = String(randInt(min, max)).padStart(5, '0');
+    const suffix = String(randInt(1, 999)).padStart(3, '0');
+    return `${prefix}${suffix}`;
+  },
+  birthdate: () => {
+    const now = new Date();
+    const youngest = new Date(now.getFullYear() - 18, now.getMonth(), now.getDate());
+    const oldest = new Date(now.getFullYear() - 80, now.getMonth(), now.getDate());
+    const time = randInt(oldest.getTime(), youngest.getTime());
+    // formato ISO (YYYY-MM-DD); o content.js converte para dd/mm/aaaa quando o campo não é type="date"
+    return new Date(time).toISOString().slice(0, 10);
   }
 };
+
+const FIRST_NAMES = [
+  'João', 'Pedro', 'Lucas', 'Gabriel', 'Mateus', 'Rafael', 'Guilherme', 'Felipe', 'Bruno', 'Thiago',
+  'Carlos', 'Fernando', 'Ricardo', 'Eduardo', 'Rodrigo', 'Marcelo', 'André', 'Paulo', 'Diego', 'Vinícius',
+  'Leonardo', 'Gustavo', 'Henrique', 'Daniel', 'Marcos', 'Luiz', 'Renato', 'Caio', 'Samuel', 'Otávio',
+  'Maria', 'Ana', 'Juliana', 'Fernanda', 'Patrícia', 'Camila', 'Amanda', 'Beatriz', 'Larissa', 'Mariana',
+  'Letícia', 'Bruna', 'Aline', 'Carolina', 'Gabriela', 'Isabela', 'Renata', 'Vanessa', 'Natália', 'Priscila',
+  'Luciana', 'Débora', 'Tatiane', 'Raquel', 'Cristina', 'Daniela', 'Sabrina', 'Helena', 'Laura', 'Sofia'
+];
+
+const LAST_NAMES = [
+  'Silva', 'Santos', 'Oliveira', 'Souza', 'Rodrigues', 'Ferreira', 'Alves', 'Pereira', 'Lima', 'Gomes',
+  'Costa', 'Ribeiro', 'Martins', 'Carvalho', 'Almeida', 'Lopes', 'Soares', 'Fernandes', 'Vieira', 'Barbosa',
+  'Rocha', 'Dias', 'Nascimento', 'Andrade', 'Moreira', 'Nunes', 'Marques', 'Machado', 'Mendes', 'Freitas',
+  'Cardoso', 'Ramos', 'Gonçalves', 'Santana', 'Teixeira', 'Araújo', 'Pinto', 'Cunha', 'Moura', 'Castro',
+  'Correia', 'Monteiro', 'Barros', 'Azevedo', 'Campos', 'Melo', 'Cavalcanti', 'Duarte', 'Borges', 'Batista',
+  'Farias', 'Miranda', 'Pires', 'Fonseca', 'Tavares', 'Medeiros', 'Siqueira', 'Reis', 'Peixoto', 'Guimarães'
+];
+
+// só "de" combina com qualquer sobrenome (evita "do Miranda", "dos Melo")
+const NAME_PARTICLES = ['de'];
+
+function pick(list) {
+  return list[Math.floor(Math.random() * list.length)];
+}
+
+// inteiro aleatório entre min e max (inclusive)
+function randInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function removeAccents(text) {
+  return text.normalize('NFD').replace(/[̀-ͯ]/g, '');
+}
+
+// Monta uma pessoa fictícia: 1 nome, 1 ou 2 sobrenomes e, às vezes, uma partícula ("da", "de"...)
+function randomPerson() {
+  const lasts = [pick(LAST_NAMES)];
+  if (Math.random() < 0.6) {
+    let second = pick(LAST_NAMES);
+    while (second === lasts[0]) second = pick(LAST_NAMES);
+    lasts.push(second);
+  }
+
+  return {
+    first: pick(FIRST_NAMES),
+    lasts,
+    particle: Math.random() < 0.2 ? pick(NAME_PARTICLES) : null
+  };
+}
 
 // Sorteia os 12 primeiros caracteres do CNPJ (8 da raiz + 4 da filial) usando o alfabeto dado.
 // A filial "0000" não existe, então é sorteada de novo nesse caso.
@@ -154,23 +249,40 @@ chrome.runtime.onInstalled.addListener(() => {
     contexts: ['editable']
   });
 
-  const types = [
-    { id: 'name', title: 'Nome Completo' },
-    { id: 'email', title: 'E-mail' },
-    { id: 'phone', title: 'Telefone' },
-    { id: 'cpf', title: 'CPF' },
-    { id: 'rg', title: 'RG' },
-    { id: 'cnpj', title: 'CNPJ (legado)' },
-    { id: 'cnpj_alfa', title: 'CNPJ alfanumérico' },
-    { id: 'ie', title: 'Inscrição Estadual' },
-    { id: 'password', title: 'Senha' },
-    { id: 'uuid', title: 'UUID v4' }
+  const groups = [
+    { id: 'group_personal', title: 'Pessoais' },
+    { id: 'group_documents', title: 'Documentos' },
+    { id: 'group_others', title: 'Outros' }
   ];
+
+  const types = [
+    { id: 'name', title: 'Nome Completo', group: 'group_personal' },
+    { id: 'email', title: 'E-mail', group: 'group_personal' },
+    { id: 'phone', title: 'Telefone', group: 'group_personal' },
+    { id: 'birthdate', title: 'Data de Nascimento', group: 'group_personal' },
+    { id: 'cep', title: 'CEP', group: 'group_personal' },
+    { id: 'cpf', title: 'CPF', group: 'group_documents' },
+    { id: 'rg', title: 'RG', group: 'group_documents' },
+    { id: 'cnpj', title: 'CNPJ (legado)', group: 'group_documents' },
+    { id: 'cnpj_alfa', title: 'CNPJ alfanumérico', group: 'group_documents' },
+    { id: 'ie', title: 'Inscrição Estadual', group: 'group_documents' },
+    { id: 'password', title: 'Senha', group: 'group_others' },
+    { id: 'uuid', title: 'UUID v4', group: 'group_others' }
+  ];
+
+  groups.forEach(group => {
+    chrome.contextMenus.create({
+      id: group.id,
+      parentId: 'inputGenerator',
+      title: group.title,
+      contexts: ['editable']
+    });
+  });
 
   types.forEach(tipo => {
     chrome.contextMenus.create({
       id: tipo.id,
-      parentId: 'inputGenerator',
+      parentId: tipo.group,
       title: tipo.title,
       contexts: ['editable']
     });
@@ -186,6 +298,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 
     chrome.tabs.sendMessage(tab.id, {
       action: 'fillInput',
+      kind: info.menuItemId,
       value: generatedValue
     }, (response) => {
       if (chrome.runtime.lastError) {

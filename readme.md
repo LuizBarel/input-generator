@@ -6,14 +6,23 @@ Extensão que permite gerar dados automaticamente em campos de formulário atrav
 
 ## 🚀 Tipos de Dados Suportados
 
+Organizados em submenus no botão direito:
+
+**Pessoais**
 - Nome Completo
 - E-mail
 - Telefone
+- Data de Nascimento
+- CEP
+
+**Documentos**
 - CPF
 - RG
 - CNPJ (legado, numérico)
 - CNPJ alfanumérico
 - I.E
+
+**Outros**
 - Senha
 - UUID v4
 
