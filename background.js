@@ -70,33 +70,12 @@ const generators = {
     return `${n()}${n()}${n()}${n()}${n()}${n()}${n()}${n()}${n()}`;
   },
   cnpj: () => {
-    const cnpj = [];
-
-    for (let i = 0; i < 8; i++) {
-      cnpj.push(Math.floor(Math.random() * 10));
-    }
-    cnpj.push(0, 0, 0, 1);
-
-    const weights1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
-    const weights2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
-
-    let sum = 0;
-    for (let i = 0; i < 12; i++) {
-      sum += cnpj[i] * weights1[i];
-    }
-    let firstValidatorDigit = sum % 11;
-    firstValidatorDigit = firstValidatorDigit < 2 ? 0 : 11 - firstValidatorDigit;
-    cnpj.push(firstValidatorDigit);
-
-    sum = 0;
-    for (let i = 0; i < 13; i++) {
-      sum += cnpj[i] * weights2[i];
-    }
-    let secondValidatorDigit = sum % 11;
-    secondValidatorDigit = secondValidatorDigit < 2 ? 0 : 11 - secondValidatorDigit;
-    cnpj.push(secondValidatorDigit);
-
-    return cnpj.join('');
+    const base = randomCnpjBase('0123456789');
+    return base + cnpjCheckDigits(base);
+  },
+  cnpj_alfa: () => {
+    const base = randomCnpjBase('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+    return base + cnpjCheckDigits(base);
   },
   ie: () => {
     const base = [];
@@ -128,6 +107,45 @@ const generators = {
   }
 };
 
+// Sorteia os 12 primeiros caracteres do CNPJ (8 da raiz + 4 da filial) usando o alfabeto dado.
+// A filial "0000" não existe, então é sorteada de novo nesse caso.
+function randomCnpjBase(alphabet) {
+  const pick = (n) => {
+    let s = '';
+    for (let i = 0; i < n; i++) {
+      s += alphabet[Math.floor(Math.random() * alphabet.length)];
+    }
+    return s;
+  };
+
+  let branch;
+  do {
+    branch = pick(4);
+  } while (branch === '0000');
+
+  return pick(8) + branch;
+}
+
+// Calcula os 2 DVs do CNPJ (numérico ou alfanumérico) a partir dos 12 primeiros caracteres.
+// Cada caractere vale (código ASCII - 48): '0'-'9' => 0-9, 'A'-'Z' => 17-42.
+function cnpjCheckDigits(base) {
+  const weights1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+  const weights2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+  const values = [...base].map(c => c.charCodeAt(0) - 48);
+
+  const digit = (weights) => {
+    const sum = weights.reduce((acc, w, i) => acc + values[i] * w, 0);
+    const rest = sum % 11;
+    return rest < 2 ? 0 : 11 - rest;
+  };
+
+  const first = digit(weights1);
+  values.push(first);
+  const second = digit(weights2);
+
+  return `${first}${second}`;
+}
+
 // create contextMenu when install extension
 chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
@@ -142,7 +160,8 @@ chrome.runtime.onInstalled.addListener(() => {
     { id: 'phone', title: 'Telefone' },
     { id: 'cpf', title: 'CPF' },
     { id: 'rg', title: 'RG' },
-    { id: 'cnpj', title: 'CNPJ' },
+    { id: 'cnpj', title: 'CNPJ (legado)' },
+    { id: 'cnpj_alfa', title: 'CNPJ alfanumérico' },
     { id: 'ie', title: 'Inscrição Estadual' },
     { id: 'password', title: 'Senha' },
     { id: 'uuid', title: 'UUID v4' }

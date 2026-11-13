@@ -11,9 +11,11 @@ Extensão que permite gerar dados automaticamente em campos de formulário atrav
 - Telefone
 - CPF
 - RG
-- CNPJ
+- CNPJ (legado, numérico)
+- CNPJ alfanumérico
 - I.E
 - Senha
+- UUID v4
 
 ## 📦 Instalação Local (Modo Desenvolvedor)
 
