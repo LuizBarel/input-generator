@@ -68,14 +68,6 @@ Organizados em submenus no botão direito:
 4. Escolha o tipo de dado que deseja gerar
 5. O campo será preenchido automaticamente!
 
-## 📤 Publicação na Chrome Web Store
-
-1. Rode `./package.sh` para gerar `gerador-de-inputs.zip` (manifest, scripts da extensão e ícones).
-2. Envie o ZIP no [painel de desenvolvedor](https://chrome.google.com/webstore/devconsole).
-3. Textos, justificativas de permissão e política de privacidade estão em `docs/store-listing.md`.
-
-O preenchimento usa `activeTab` + `scripting`: o código só é injetado na aba após o clique no menu, sem permissão de host.
-
 ## 🔧 Personalização
 
 Para adicionar um novo tipo, edite `generators.js`:
